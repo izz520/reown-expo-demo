@@ -9,7 +9,9 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "buildNumber": "3",
+      "supportsTablet": true,
+      "bundleIdentifier": "com.reown.rnreowndemo"
     },
     "android": {
       "adaptiveIcon": {
