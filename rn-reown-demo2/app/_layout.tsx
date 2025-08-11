@@ -1,5 +1,4 @@
 import { useColorScheme } from '@/hooks/useColorScheme';
-import { tamaguiConfig } from '@/tamagui.config';
 import { DarkTheme, DefaultTheme, ThemeProvider } from '@react-navigation/native';
 import {
   AppKit,
@@ -12,9 +11,7 @@ import "@walletconnect/react-native-compat";
 import { useFonts } from 'expo-font';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
-import React from 'react';
 import 'react-native-reanimated';
-import { TamaguiProvider } from 'tamagui';
 import { WagmiProvider } from "wagmi";
 export default function RootLayout() {
   const colorScheme = useColorScheme();
@@ -25,7 +22,7 @@ export default function RootLayout() {
   // 0. Setup queryClient
   const queryClient = new QueryClient();
 
-  // 1. Get projectId at https://dashboard.reown.com
+  // 1. Get projectId at https://cloud.reown.com
   const projectId = "ac3cad08aabba7523d5832dab2915914";
 
   // 2. Create config
@@ -47,17 +44,21 @@ export default function RootLayout() {
   // 3. Create modal
   createAppKit({
     projectId,
-    metadata,
     wagmiConfig,
+    metadata,
     defaultChain: mainnet, // Optional
     enableAnalytics: true, // Optional - defaults to your Cloud configuration
   });
 
-  if (!loaded) return null;
+  if (!loaded) {
+    // Async font loading only occurs in development.
+    return null;
+  }
+
   return (
-    <WagmiProvider config={wagmiConfig}>
-      <QueryClientProvider client={queryClient}>
-        <TamaguiProvider config={tamaguiConfig} defaultTheme={colorScheme!}>
+    <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
+      <WagmiProvider config={wagmiConfig}>
+        <QueryClientProvider client={queryClient}>
           <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
             <Stack>
               <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
@@ -66,8 +67,8 @@ export default function RootLayout() {
             <AppKit />
             <StatusBar style="auto" />
           </ThemeProvider>
-        </TamaguiProvider>
-      </QueryClientProvider>
-    </WagmiProvider>
+        </QueryClientProvider>
+      </WagmiProvider>
+    </ThemeProvider>
   );
 }

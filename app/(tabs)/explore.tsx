@@ -2,6 +2,7 @@ import { StyleSheet, Text } from 'react-native';
 
 import ParallaxScrollView from '@/components/ParallaxScrollView';
 import { IconSymbol } from '@/components/ui/IconSymbol';
+import { AppKitButton } from '@reown/appkit-wagmi-react-native';
 
 export default function TabTwoScreen() {
   return (
@@ -16,6 +17,7 @@ export default function TabTwoScreen() {
         />
       }>
       <Text>123</Text>
+      <AppKitButton />
     </ParallaxScrollView>
   );
 }
